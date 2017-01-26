@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div.dropzone
+		div.dropzone(@dragenter="onDragEnter" @drop.prevent="onDragEnter")
 			input(type="file" multiple @change="onFileChange")
 			h2 Drop images here
 		div.deletezone
@@ -9,9 +9,14 @@
 
 <script>
 	import firebase from 'config/firebase';
+	import cuid from 'cuid';
 
 	export default {
 		methods: {
+			onDragEnter() {
+
+			},
+
 			onFileChange(event) {
 				var files = event.target.files || event.dataTransfer.files;
 				for (var i = 0; i < files.length; i++) {
@@ -27,7 +32,7 @@
 					file.blob = this.dataURLtoBlob(e.target.result);
 					file.dataURL = e.target.result;
 					file.uid = cuid();
-					this.files.push(file);
+					this.$emit('file-added', file);
 				};
 
 				reader.readAsDataURL(file);
@@ -49,5 +54,14 @@
 	.dropzone {
 		height: 300px;
 		border: 3px dashed white;
+	}
+	input[type="file"] {
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		z-index: 1;
 	}
 </style>

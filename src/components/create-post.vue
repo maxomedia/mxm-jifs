@@ -2,7 +2,7 @@
 	div
 		h1 new post
 		div.clearfix
-			image-upload(:file="file" v-for="file in files")
+			image-upload(:file="file" v-for="file in files" v-on:file-added="addFile")
 		p
 			span Type a
 			input(placeholder="title" v-model="title")
@@ -36,6 +36,10 @@
 		},
 
 		methods: {
+			addFile(file) {
+				this.files.push(file);
+			},
+
 			submitPost() {
 				this.uploadingFiles = true;
 				var uploads = this.$children
@@ -66,6 +70,7 @@
 
 		components: {
 			ImageUpload,
+			ImageDropper,
 		}
 	};
 </script>
