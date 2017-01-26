@@ -18,4 +18,4 @@ Vue.use(vuefire);
 export default firebase;
 export const database = firebase.database();
 export const auth = firebase.auth();
-export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
+export const storage = firebase.storage();

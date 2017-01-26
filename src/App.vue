@@ -1,6 +1,13 @@
 <template lang="pug">
   div#app
     header
+      router-link(to="/create") Create Post
+      router-link(to="/posts") Posts
+      auth-guard
+        div(slot="auth") Logged in as "{{user.displayName}}"
+          button(@click="signOut") logout
+        div(slot="no-auth")
+          router-link(to="/login") login
     main
       router-view
     footer
@@ -8,6 +15,7 @@
 
 <script>
 import store from 'config/store';
+import AuthGuard from 'components/auth-guard';
 import { auth } from 'config/firebase';
 
 export default {
@@ -27,10 +35,21 @@ export default {
         }
       });
   },
+  computed: {
+    user() {return this.$store.state.auth.user},
+  },
+  methods: {
+    signOut() {
+      auth.signOut();
+    }
+  },
+  components: {
+    AuthGuard,
+  }
 }
 </script>
 
-<style>
+<style lang="scss">
   html {
     height: 100%;
     font-size: 10px;
@@ -49,5 +68,23 @@ export default {
 
   main {
     flex-grow: 1;
+  }
+
+  a {
+    display: inline-block;
+    color: lightblue;
+    text-decoration: none;
+
+    &.active {
+      text-decoration: underline;
+    }
+
+    & + a {
+      margin-left: 1em;
+    }
+  }
+
+  img {
+    max-width: 100%;
   }
 </style>

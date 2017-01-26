@@ -1,6 +1,6 @@
 <template lang="pug">
 	div
-		div.dropzone(@dragenter="onDragEnter" @drop.prevent="onDragEnter")
+		div.dropzone(@dragover="onDragEnter")
 			input(type="file" multiple @change="onFileChange")
 			h2 Drop images here
 		div.deletezone
@@ -13,8 +13,8 @@
 
 	export default {
 		methods: {
-			onDragEnter() {
-
+			onDragEnter(e) {
+				e.preventDefault();
 			},
 
 			onFileChange(event) {
@@ -52,6 +52,7 @@
 
 <style lang="scss">
 	.dropzone {
+		position: relative;
 		height: 300px;
 		border: 3px dashed white;
 	}
@@ -62,6 +63,7 @@
 		left: 0;
 		bottom: 0;
 		right: 0;
+		width: 100%;
 		z-index: 1;
 	}
 </style>

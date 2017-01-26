@@ -2,7 +2,6 @@
 	div.preview-image
 		img(:src="file.dataURL")
 		p.progress Progress: {{progress}}%
-		button(@click="upload") loadup
 </template>
 
 <script>

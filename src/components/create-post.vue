@@ -2,12 +2,12 @@
 	div
 		h1 new post
 		div.clearfix
-			image-upload(:file="file" v-for="file in files" v-on:file-added="addFile")
+			image-upload(:file="file" v-for="file in files")
 		p
 			span Type a
 			input(placeholder="title" v-model="title")
 			span  and some
-			image-dropper
+			image-dropper(@file-added="addFile")
 			span  or write some
 			textarea(placeholder="text" v-model="text")
 			span  and
@@ -35,6 +35,10 @@
 			};
 		},
 
+		computed: {
+			user() { return this.$store.state.auth.user; }
+		},
+
 		methods: {
 			addFile(file) {
 				this.files.push(file);
@@ -55,6 +59,7 @@
 							title: this.title,
 							text: this.text,
 							images: data,
+							user: this.user,
 						});
 
 						return firebase
