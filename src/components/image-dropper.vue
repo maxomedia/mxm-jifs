@@ -3,50 +3,52 @@
 		div.dropzone(@dragover="onDragEnter")
 			input(type="file" multiple @change="onFileChange")
 			h2 Drop images here
-		div.deletezone
-			h2 Delete images here
+			p Or click to upload images
+		div.clearfix.image-dropper--previews
+			image-upload(:image="image" v-for="(image, index) in images" ref="images" @click.native="removeImage(index)")
 </template>
 
 <script>
-	import firebase from 'config/firebase';
+	import Vue from 'vue';
 	import cuid from 'cuid';
+	import firebase from 'config/firebase';
+	import ImageUpload from 'components/image-upload';
 
 	export default {
+		name: 'ImageDropper',
+		data() {
+			return {
+				images: [],
+			};
+		},
+
 		methods: {
+			uploadAll() {
+				var uploads = this.$refs.images.map(image => image.upload());
+				return Promise.all(uploads);
+			},
+
 			onDragEnter(e) {
 				e.preventDefault();
 			},
 
 			onFileChange(event) {
-				var files = event.target.files || event.dataTransfer.files;
-				for (var i = 0; i < files.length; i++) {
-					this.createFile(files[i]);
+				var images = event.target.files || event.dataTransfer.files;
+				for (var i = 0; i < images.length; i++) {
+					images[i].dataURL = window.URL.createObjectURL(images[i]);
+					this.images.push(images[i]);
 				}
 			},
 
-			createFile(file) {
-				var img = new Image();
-				var reader = new FileReader();
-
-				reader.onload = (e) => {
-					file.blob = this.dataURLtoBlob(e.target.result);
-					file.dataURL = e.target.result;
-					file.uid = cuid();
-					this.$emit('file-added', file);
-				};
-
-				reader.readAsDataURL(file);
+			removeImage(index) {
+				this.images.splice(index, 1)
+				//this.images = this.images.filter(image => image.name !== imageToRemove.name);
 			},
+		},
 
-			dataURLtoBlob(dataurl) {
-				var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-		        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-		    while(n--){
-		        u8arr[n] = bstr.charCodeAt(n);
-		    }
-		    return new Blob([u8arr], {type:mime});
-			},
-		}
+		components: {
+			ImageUpload,
+		},
 	}
 </script>
 
@@ -55,6 +57,14 @@
 		position: relative;
 		height: 300px;
 		border: 3px dashed white;
+	}
+	.image-dropper--previews {
+		display: flex;
+		flex-wrap: wrap;
+
+		.image-upload {
+			flex: 0 0 200px;
+		}
 	}
 	input[type="file"] {
 		opacity: 0;
