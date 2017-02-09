@@ -41,8 +41,7 @@
 			},
 
 			removeImage(index) {
-				this.images.splice(index, 1)
-				//this.images = this.images.filter(image => image.name !== imageToRemove.name);
+				this.images.splice(index, 1);
 			},
 		},
 
