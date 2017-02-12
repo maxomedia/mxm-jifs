@@ -1,4 +1,5 @@
 import cuid from 'cuid';
+import firebase from 'config/firebase';
 
 export default function (post = {}) {
 	this.id = post.id || cuid();
@@ -6,7 +7,17 @@ export default function (post = {}) {
 	this.title = post.title || '';
 	this.text = post.text || '';
 	this.images = post.images || [];
-	this.upvotes = post.upvotes || {};
-	this.downvotes = post.downvotes || {};
+  this.votes = post.votes || {};
   this.user = post.user || null;
+
+  var ref = firebase.database().ref(`/posts/${this.id}`);
+
+  this.set = () => ref.set(JSON.parse(JSON.stringify(this)));
+  this.remove = () => ref.remove();
+  this.upvote = (userId) => ref
+    .child(`votes/${userId}`)
+    .set(!this.votes[userId] || this.votes[userId] < 0 ? 1 : 0);
+  this.downvote = (userId) => ref
+    .child(`votes/${userId}`)
+    .set(!this.votes[userId] || this.votes[userId] < 0 ? -1 : 0);
 }

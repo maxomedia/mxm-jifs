@@ -6,6 +6,7 @@ import Login from 'components/login';
 import Register from 'components/register';
 import CreatePost from 'components/create-post';
 import Posts from 'components/posts';
+import PostDetail from 'components/post-detail';
 
 Vue.use(Router);
 
@@ -40,7 +41,11 @@ const router = new Router({
 			meta: {
 				requiresAuth: true,
 			},
-		}
+		},
+		{
+			path: '/post/:id',
+			component: PostDetail,
+		},
 	],
 });
 

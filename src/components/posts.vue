@@ -4,13 +4,17 @@
 </template>
 
 <script>
-
+  import Post from 'models/post';
   import PostView from 'components/post';
   import { database } from 'config/firebase';
 
   export default {
+    computed: {
+      posts() { return this.firePosts.map(post => new Post(post)); }
+    },
+
     firebase: {
-      posts: database.ref('/posts'),
+      firePosts: database.ref('/posts'),
     },
 
     components: {
