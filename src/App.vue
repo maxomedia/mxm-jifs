@@ -3,6 +3,7 @@
     header
       router-link(to="/create") Create Post
       router-link(to="/posts") Posts
+      router-link(to="/profile") Profile
       auth-guard
         div(slot="auth") Logged in as "{{user.displayName}}"
           button(@click="signOut") logout
