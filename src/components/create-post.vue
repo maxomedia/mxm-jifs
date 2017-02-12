@@ -27,7 +27,7 @@
 		},
 
 		computed: {
-			user() { return this.$store.state.auth.user; }
+			user() { return this.$store.state.auth.user; },
 		},
 
 		methods: {
