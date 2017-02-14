@@ -5,55 +5,53 @@
 				h1 You are already logged in...
 				button(@click="logout") logout
 			div(slot="no-auth")
-				h1 LOGIN,
-				p
-					span dear 
-					input(placeholder="maxo (email)" v-model="email")
-					span , your password was 
-					input(placeholder="this one" v-model="password")
-					span , right? Let's 
-					button(@click="login") rock.
+				button(@click="login") Log in with google
 				p.error(v-if="error") {{error}}
 </template>
 
 <script>
-	import firebase from 'config/firebase';
-	import router from 'config/router';
-	import AuthGuard from 'components/auth-guard';
+    import {
+        auth,
+        GoogleProvider
+    } from 'config/firebase';
+    import router from 'config/router';
+    import AuthGuard from 'components/auth-guard';
 
-	export default {
-		data() {
-			return {
-				email: '',
-				password: '',
-				error: false,
-			};
-		},
+    export default {
+        data() {
+            return {
+                email: '',
+                password: '',
+                error: false,
+                loading: false,
+            };
+        },
 
-		methods: {
-			login() {
-				firebase
-					.auth()
-					.signInWithEmailAndPassword(this.email, this.password)
-					.then(user => {
-						this.error = false;
-						router.push('/');
-					})
-					.catch(err => {
-						this.error = err;
-					})
-			},
-			logout() {
-				firebase
-					.auth()
-					.signOut();
-			}
-		},
+        methods: {
+            login() {
+                this.loading = true;
 
-		components: {
-			AuthGuard,
-		}
-	}
+                auth
+                    .signInWithPopup(GoogleProvider)
+                    .then(user => {
+                        this.loading = false;
+                        this.error = false;
+                        router.push('/');
+                    })
+                    .catch(err => {
+                        this.loading = false;
+                        this.error = err;
+                    });
+            },
+            logout() {
+                auth.signOut();
+            }
+        },
+
+        components: {
+            AuthGuard,
+        }
+    }
 </script>
 
 <style>
