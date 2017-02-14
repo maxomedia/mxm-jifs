@@ -11,29 +11,34 @@
 </template>
 
 <script>
-  import sumScore from 'src/shared/score';
+    import sumScore from 'src/shared/score';
 
-  export default {
-    props: {
-      comment: Object,
-    },
+    export default {
+        props: {
+            comment: Object,
+        },
 
-    computed: {
-      profileLink() { return `/profile/${this.comment.user.uid}`; },
-      user() { return this.$store.state.auth.user; },
-      score() { return sumScore(this.comment.votes); }
-    }
-  };
+        computed: {
+            profileLink() {
+                return `/profile/${this.comment.user.uid}`;
+            },
+            user() {
+                return this.$store.state.auth.user;
+            },
+            score() {
+                return sumScore(this.comment.votes);
+            }
+        }
+    };
 </script>
 
 <style lang="scss">
-  .comment {
-    margin: 1em 0;
-    padding: 0.5em;
-    background: rgba(255,255,255, 0.15);
-
-    p {
-      margin: 0;
+    .comment {
+        margin: 1em 0;
+        padding: 0.5em;
+        background: rgba(255, 255, 255, 0.15);
+        p {
+            margin: 0;
+        }
     }
-  }
 </style>
