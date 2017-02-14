@@ -12,63 +12,67 @@
 </template>
 
 <script>
-	import cuid from 'cuid';
-	import Post from 'models/post';
-	import firebase from 'config/firebase';
-	import ImageDropper from 'components/image-dropper';
+    import cuid from 'cuid';
+    import Post from 'models/post';
+    import firebase from 'config/firebase';
+    import ImageDropper from 'components/image-dropper';
 
-	export default {
-		data() {
-			return {
-				title: '',
-				error: false,
-				uploadingFiles: false,
-			};
-		},
+    export default {
+        data() {
+            return {
+                title: '',
+                error: false,
+                uploadingFiles: false,
+            };
+        },
 
-		computed: {
-			user() { return this.$store.state.auth.user; },
-		},
+        computed: {
+            user() {
+                return this.$store.state.auth.user;
+            },
+        },
 
-		methods: {
-			submitPost() {
-				this.uploadingFiles = true;
-				this.$refs.uploader
-					.uploadAll()
-					.then((data) => {
-						this.uploadingFiles = false;
-						this.error = false;
+        methods: {
+            submitPost() {
+                this.uploadingFiles = true;
 
-						var post = new Post({
-							title: this.title,
-							images: data,
-							user: this.user.uid,
-						});
+                this.$refs.uploader
+                    .uploadAll()
+                    .then((data) => {
+                        this.uploadingFiles = false;
+                        this.error = false;
 
-						return firebase
-							.database()
-							.ref(`/posts/${post.id}`)
-							.set(post);
-					})
-					.catch(err => {
-						this.error = err;
-					});
-			},
-		},
+                        var post = new Post({
+                            title: this.title,
+                            images: data,
+                            user: this.user.uid,
+                        });
 
-		components: {
-			ImageDropper,
-		}
-	};
+                        return firebase
+                            .database()
+                            .ref(`/posts/${post.id}`)
+                            .set(post.getData());
+                    })
+                    .catch(err => {
+                        this.error = err.message;
+                    });
+            },
+        },
+
+        components: {
+            ImageDropper,
+        }
+    };
 </script>
 
 <style>
-	.clearfix:before,
-	.clearfix:after {
-		display: table;
-		content: '';
-	}
-	.clearfix:after {
-		clear: both;
-	}
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: '';
+    }
+    
+    .clearfix:after {
+        clear: both;
+    }
 </style>
