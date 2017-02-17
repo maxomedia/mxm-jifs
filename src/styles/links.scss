@@ -1,0 +1,11 @@
+ a {
+     display: inline-block;
+     color: lightblue;
+     text-decoration: none;
+     &.active {
+         text-decoration: underline;
+     }
+     &+a {
+         margin-left: 1em;
+     }
+ }

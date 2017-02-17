@@ -1,17 +1,19 @@
 <template lang="pug">
   div#app
     header
-      router-link(to="/create") Create Post
-      router-link(to="/posts") Posts
-      router-link(to="/profile") Profile
-      auth-guard
-        div(slot="auth") Logged in as "{{user.displayName || user.email}}"
-          button(@click="signOut") logout
-        div(slot="no-auth")
-          router-link(to="/login") login
+        .container
+            router-link(to="/create") Create Post
+            router-link(to="/posts") Posts
+            router-link(to="/profile") Profile
+            auth-guard
+                div(slot="auth") Logged in as "{{user.displayName || user.email}}"
+                button(@click="signOut") logout
+                div(slot="no-auth")
+                router-link(to="/login") login
     main
-      styleguide
-      router-view
+        .container
+            router-view
+            styleguide
     footer
 </template>
 
@@ -60,37 +62,5 @@
 </script>
 
 <style lang="scss">
-    @import 'src/sass/text';
-    html {
-        height: 100%;
-    }
-    
-    body {
-        margin: 0;
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: #353535;
-        color: white;
-    }
-    
-    main {
-        flex-grow: 1;
-    }
-    
-    a {
-        display: inline-block;
-        color: lightblue;
-        text-decoration: none;
-        &.active {
-            text-decoration: underline;
-        }
-        &+a {
-            margin-left: 1em;
-        }
-    }
-    
-    img {
-        max-width: 100%;
-    }
+    @import 'src/styles/_index';
 </style>

@@ -1,0 +1,18 @@
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: '';
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.module {
+    >*:first-child {
+        margin-top: 0;
+    }
+    >*:last-child {
+        margin-bottom: 0;
+    }
+}
