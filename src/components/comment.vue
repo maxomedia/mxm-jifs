@@ -1,6 +1,6 @@
 <template lang="pug">
   li.comment
-    p {{comment.text}}
+    p.comment--text {{comment.text}}
     p
       span.smaller by 
         router-link(:to="profileLink") {{comment.user.displayName}}

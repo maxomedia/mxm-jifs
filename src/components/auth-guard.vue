@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.auth-guard
     slot(v-if="authenticated")
     slot(name="auth" v-if="authenticated")
     slot(name="no-auth" v-if="!authenticated")
@@ -7,11 +7,13 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+    import {
+        mapState
+    } from 'vuex';
 
-  export default {
-    computed: mapState({
-      authenticated: state => state.auth.authenticated,
-    }),
-  };
+    export default {
+        computed: mapState({
+            authenticated: state => state.auth.authenticated,
+        }),
+    };
 </script>
